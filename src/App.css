@@ -132,25 +132,26 @@ button:active {
 .input-group input[type="number"]:focus {
   outline: none;
   border-color: var(--primary-color-light);
-  box-shadow: 0 0 0 3px rgba(103, 85, 39, 0.2);
-  background: var(--interface-surface-light);
+  background: var(--interface-surface-dark-40);
 }
 
-.conversion {
+.calculated-weights {
   margin-top: 1rem;
   padding: 1rem;
-  background: linear-gradient(
-    135deg,
-    var(--secondary-color-light) 0%,
-    var(--primary-color-light) 100%
-  );
+  background: var(--primary-color-light);
   border-radius: 8px;
   color: var(--interface-surface-light);
 }
 
+.calculated-weights .variant:nth-child(2) {
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
 .variant {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 0.5rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -169,7 +170,6 @@ button:active {
   text-align: center;
   margin: 3rem auto;
   padding: 2rem;
-  background: var(--interface-surface-light);
   border-radius: 15px;
   max-width: 400px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -188,12 +188,6 @@ button:active {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-.total-section p {
-  font-size: 1.2rem;
-  color: var(--secondary-color-light);
-  font-style: italic;
 }
 
 footer {
@@ -244,12 +238,8 @@ footer {
     box-shadow: 0 0 0 3px rgba(221, 196, 140, 0.2);
   }
 
-  .conversion {
-    background: linear-gradient(
-      135deg,
-      var(--secondary-color-dark) 0%,
-      var(--primary-color-dark) 100%
-    );
+  .calculated-weights {
+    background: var(--primary-color-dark);
     color: var(--interface-surface-dark);
   }
 
@@ -258,24 +248,15 @@ footer {
   }
 
   .total-section {
-    background: var(--interface-surface-dark-container);
-    border-color: var(--secondary-color-dark);
+    background: var(--interface-surface-dark-);
   }
 
   .total-section h2 {
     color: var(--primary-color-dark);
-    background: linear-gradient(
-      135deg,
-      var(--primary-color-dark) 0%,
-      var(--secondary-color-dark) 100%
-    );
+    background: var(--primary-color-dark);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-  }
-
-  .total-section p {
-    color: var(--secondary-color-dark);
   }
 
   .save-indicator small {

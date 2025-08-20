@@ -57,12 +57,12 @@ function App() {
 
   const calculateSafeWeight = (weight) => {
     if (!weight || isNaN(weight)) return ""; 
-    return weight * 0.9; // 90% of the weight
+    return weight * 0.95;
   }
 
   const calculateReachWeight = (weight) => {
     if (!weight || isNaN(weight)) return ""; 
-    return weight * 1.1; // 110% of the weight
+    return weight * 1.05;
   }
 
   const clearAllData = () => {
@@ -81,6 +81,35 @@ function App() {
     if (!num || isNaN(num)) return "";
     return Math.round(num / 2.5) * 2.5;
   };
+
+  const LiftCard = ({ lift, value, onChange, unit }) => (
+    <div className="lift-column">
+      <h2>{lift}</h2>
+      <div className="input-group">
+        <label htmlFor="{lift}">Weight ({unit})</label>
+        <input
+          id={lift}
+          type="number"
+          value={value}
+          onChange={onChange}
+          placeholder={`Enter weight in ${unit}`}
+        />
+      </div>
+      {value && (
+        <div className="calculated-weights">
+          <div className="variant">
+            Safe (90%): {roundToNearest2_5(calculateSafeWeight(convertWeight(value)))} {getConvertedUnit()}
+          </div>
+          <div className="variant">
+            {roundToNearest2_5(convertWeight(value))} {getConvertedUnit()}
+          </div>
+          <div className="variant">
+            Reach (110%): {roundToNearest2_5(calculateReachWeight(convertWeight(value)))} {getConvertedUnit()}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="app">
@@ -110,96 +139,29 @@ function App() {
         </div>
       </header>
       <div className="calculator-container">
-        <div className="lift-column">
-          <h2>Squat</h2>
-          <div className="input-group">
-            <label htmlFor="squat">Weight ({unit})</label>
-            <input
-              id="squat"
-              type="number"
-              value={squat}
-              onChange={(e) => setSquat(e.target.value)}
-              placeholder={`Enter weight in ${unit}`}
-            />
-          </div>
-          {squat && (
-            <div className="calculated-weights">
-              <div className="variant">
-                <strong>Converted:</strong> {roundToNearest2_5(convertWeight(squat))} kgs
-              </div>
-              <div className="variant">
-                <strong>Safe (90%):</strong> {roundToNearest2_5(calculateSafeWeight(convertWeight(squat)))} kgs
-              </div>
-              <div className="variant">
-                <strong>Reach (110%):</strong> {roundToNearest2_5(calculateReachWeight(convertWeight(squat)))} kgs
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="lift-column">
-          <h2>Bench Press</h2>
-          <div className="input-group">
-            <label htmlFor="bench">Weight ({unit})</label>
-            <input
-              id="bench"
-              type="number"
-              value={bench}
-              onChange={(e) => setBench(e.target.value)}
-              placeholder={`Enter weight in ${unit}`}
-            />
-          </div>
-          {bench && (
-            <div className="calculated-weights">
-              <div className="variant">
-                <strong>Converted:</strong> {roundToNearest2_5(convertWeight(bench))} kgs
-              </div>
-              <div className="variant">
-                <strong>Safe (90%):</strong> {roundToNearest2_5(calculateSafeWeight(convertWeight(bench)))} kgs
-              </div>
-              <div className="variant">
-                <strong>Reach (110%):</strong> {roundToNearest2_5(calculateReachWeight(convertWeight(bench)))} kgs
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="lift-column">
-          <h2>Deadlift</h2>
-          <div className="input-group">
-            <label htmlFor="deadlift">Weight ({unit})</label>
-            <input
-              id="deadlift"
-              type="number"
-              value={deadlift}
-              onChange={(e) => setDeadlift(e.target.value)}
-              placeholder={`Enter weight in ${unit}`}
-            />
-          </div>
-          {deadlift && (
-            <div className="calculated-weights">
-              <div className="variant">
-                <strong>Converted:</strong> {roundToNearest2_5(convertWeight(deadlift))} kgs
-              </div>
-              <div className="variant">
-                <strong>Safe (90%):</strong> {roundToNearest2_5(calculateSafeWeight(convertWeight(deadlift)))} kgs
-              </div>
-              <div className="variant">
-                <strong>Reach (110%):</strong> {roundToNearest2_5(calculateReachWeight(convertWeight(deadlift)))} kgs
-              </div>
-            </div>
-          )}
-        </div>
+        <LiftCard 
+          lift="Squat"
+          value={squat}
+          onChange={(e) => setSquat(e.target.value)}
+          unit={unit}
+        />
+        <LiftCard 
+          lift="Bench Press"
+          value={bench}
+          onChange={(e) => setBench(e.target.value)}
+          unit={unit}
+        />
+        <LiftCard 
+          lift="Deadlift"
+          value={deadlift}
+          onChange={(e) => setDeadlift(e.target.value)}
+          unit={unit}
+        />
       </div>
       <div className="total-section">
         <h2>
-          Total: {calculateTotal().toFixed(1)} {unit}
+          Total: {convertWeight(calculateTotal())} kgs
         </h2>
-        {calculateTotal() > 0 && (
-          <p>
-            ({convertWeight(calculateTotal())} {getConvertedUnit()})
-          </p>
-        )}
       </div>
       <div></div>
       <footer>
