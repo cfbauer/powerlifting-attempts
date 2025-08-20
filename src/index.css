@@ -1,0 +1,42 @@
+:root {
+  font-family: Lato, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  --primary-color-light: #675527;
+  --primary-color-light-40: #6f5c2d;
+  --primary-color-light-60: #a48e5b;
+  --secondary-color-light: #4e6359;
+  --secondary-color-light-30: #374b42;
+  --secondary-color-light-40: #4e6359;
+  --secondary-color-light-60: #9ab0a5;
+  --secondary-color-light-70: #9ab0a5;
+  --tertiary-color-light: #8e4c31;
+  --interface-surface-light: #fdf8f7;
+  --error-light: #ba1a1a;
+
+  --primary-color-dark: #ddc48c;
+  --secondary-color-dark: #b5ccc0;
+  --tertiary-color-dark: #ffb599;
+  --interface-surface-dark: #141313;
+  --interface-surface-dark-container: #2b2a29;
+  --error-dark: #ffb4ab;
+}
+
+body {
+  margin: 0;
+  place-items: center;
+  min-width: 320px;
+}
+
+#root {
+  width: 100%;
+}
