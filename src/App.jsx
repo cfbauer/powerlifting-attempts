@@ -1,6 +1,63 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
+const LiftCard = ({ lift, value, onChange, unit, convertWeight, roundToNearest2_5, getConvertedUnit }) => {
+  const calculateAttemptWeight = (weight, percentage) => {
+    if (!weight || isNaN(weight)) return "";
+    const convertedWeight = convertWeight(weight);
+    return roundToNearest2_5(convertedWeight * percentage);
+  };
+
+  const attempts = [
+    { name: "1st Attempt", safe: 0.90, normal: 0.92, reach: 0.92 },
+    { name: "2nd Attempt", safe: 0.95, normal: 0.96, reach: 0.97 },
+    { name: "3rd Attempt", safe: 0.98, normal: 1.00, reach: 1.02 }
+  ];
+
+  return (
+    <div className="lift-column">
+      <h2>{lift}</h2>
+      <div className="input-group">
+        <label htmlFor={lift.toLowerCase().replace(" ", "-")}>Weight ({unit})</label>
+        <input
+          id={lift.toLowerCase().replace(" ", "-")}
+          type="number"
+          value={value}
+          onChange={onChange}
+          placeholder={`Enter weight in ${unit}`}
+        />
+      </div>
+      {value && (
+        <div className="calculated-weights">
+          {attempts.map((attempt, index) => (
+            <div key={index} className="attempt-group">
+              <h3 className="attempt-title">{attempt.name}</h3>
+              <div className="variant">
+                <span className="variant-label"></span>
+                <span className="variant-weight">
+                  {calculateAttemptWeight(value, attempt.safe)} kgs
+                </span>
+              </div>
+              <div className="variant normal">
+                <span className="variant-label"></span>
+                <span className="variant-weight">
+                  {calculateAttemptWeight(value, attempt.normal)} kgs
+                </span>
+              </div>
+              <div className="variant">
+                <span className="variant-label"></span>
+                <span className="variant-weight">
+                  {calculateAttemptWeight(value, attempt.reach)} kgs
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 function App() {
   // Load saved values from localStorage or use empty string as default
   const [squat, setSquat] = useState(
@@ -18,15 +75,21 @@ function App() {
 
   // Save to localStorage whenever values change
   useEffect(() => {
-    localStorage.setItem("powerlifting-squat", squat);
+    if (squat !== "") {
+      localStorage.setItem("powerlifting-squat", squat);
+    }
   }, [squat]);
 
   useEffect(() => {
-    localStorage.setItem("powerlifting-bench", bench);
+    if (bench !== "") {
+      localStorage.setItem("powerlifting-bench", bench);
+    }
   }, [bench]);
 
   useEffect(() => {
-    localStorage.setItem("powerlifting-deadlift", deadlift);
+    if (deadlift !== "") {
+      localStorage.setItem("powerlifting-deadlift", deadlift);
+    }
   }, [deadlift]);
 
   useEffect(() => {
@@ -55,16 +118,6 @@ function App() {
     return squatNum + benchNum + deadliftNum;
   };
 
-  const calculateSafeWeight = (weight) => {
-    if (!weight || isNaN(weight)) return ""; 
-    return weight * 0.95;
-  }
-
-  const calculateReachWeight = (weight) => {
-    if (!weight || isNaN(weight)) return ""; 
-    return weight * 1.05;
-  }
-
   const clearAllData = () => {
     setSquat("");
     setBench("");
@@ -81,35 +134,6 @@ function App() {
     if (!num || isNaN(num)) return "";
     return Math.round(num / 2.5) * 2.5;
   };
-
-  const LiftCard = ({ lift, value, onChange, unit }) => (
-    <div className="lift-column">
-      <h2>{lift}</h2>
-      <div className="input-group">
-        <label htmlFor="{lift}">Weight ({unit})</label>
-        <input
-          id={lift}
-          type="number"
-          value={value}
-          onChange={onChange}
-          placeholder={`Enter weight in ${unit}`}
-        />
-      </div>
-      {value && (
-        <div className="calculated-weights">
-          <div className="variant">
-            Safe (90%): {roundToNearest2_5(calculateSafeWeight(convertWeight(value)))} {getConvertedUnit()}
-          </div>
-          <div className="variant">
-            {roundToNearest2_5(convertWeight(value))} {getConvertedUnit()}
-          </div>
-          <div className="variant">
-            Reach (110%): {roundToNearest2_5(calculateReachWeight(convertWeight(value)))} {getConvertedUnit()}
-          </div>
-        </div>
-      )}
-    </div>
-  );
 
   return (
     <div className="app">
@@ -144,26 +168,34 @@ function App() {
           value={squat}
           onChange={(e) => setSquat(e.target.value)}
           unit={unit}
+          convertWeight={convertWeight}
+          roundToNearest2_5={roundToNearest2_5}
+          getConvertedUnit={getConvertedUnit}
         />
         <LiftCard 
           lift="Bench Press"
           value={bench}
           onChange={(e) => setBench(e.target.value)}
           unit={unit}
+          convertWeight={convertWeight}
+          roundToNearest2_5={roundToNearest2_5}
+          getConvertedUnit={getConvertedUnit}
         />
         <LiftCard 
           lift="Deadlift"
           value={deadlift}
           onChange={(e) => setDeadlift(e.target.value)}
           unit={unit}
+          convertWeight={convertWeight}
+          roundToNearest2_5={roundToNearest2_5}
+          getConvertedUnit={getConvertedUnit}
         />
       </div>
       <div className="total-section">
         <h2>
-          Total: {convertWeight(calculateTotal())} kgs
+          Total: {roundToNearest2_5(convertWeight(calculateTotal()))} {getConvertedUnit()}
         </h2>
       </div>
-      <div></div>
       <footer>
         <button className="clear-button outline" onClick={clearAllData}>
           Clear All Data
@@ -172,7 +204,6 @@ function App() {
           <small>💾 Your data is automatically saved</small>
         </div>
       </footer>
-      '
     </div>
   );
 }
