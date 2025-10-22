@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-
-const LiftCard = ({ lift, value, onChange, unit, convertWeight, roundToNearest2_5, getConvertedUnit }) => {
+const LiftCard = ({
+  lift,
+  value,
+  onChange,
+  unit,
+  convertWeight,
+  roundToNearest2_5,
+  getConvertedUnit,
+}) => {
   const calculateAttemptWeight = (weight, percentage) => {
     if (!weight || isNaN(weight)) return "";
     const convertedWeight = convertWeight(weight);
@@ -9,16 +16,18 @@ const LiftCard = ({ lift, value, onChange, unit, convertWeight, roundToNearest2_
   };
 
   const attempts = [
-    { name: "1st Attempt", safe: 0.90, normal: 0.92, reach: 0.92 },
+    { name: "1st Attempt", safe: 0.9, normal: 0.92, reach: 0.92 },
     { name: "2nd Attempt", safe: 0.95, normal: 0.96, reach: 0.97 },
-    { name: "3rd Attempt", safe: 0.98, normal: 1.00, reach: 1.02 }
+    { name: "3rd Attempt", safe: 0.975, normal: 1.0, reach: 1.025 },
   ];
 
   return (
     <div className="lift-column">
       <h2>{lift}</h2>
       <div className="input-group">
-        <label htmlFor={lift.toLowerCase().replace(" ", "-")}>Weight ({unit})</label>
+        <label htmlFor={lift.toLowerCase().replace(" ", "-")}>
+          Weight ({unit})
+        </label>
         <input
           id={lift.toLowerCase().replace(" ", "-")}
           type="number"
@@ -101,7 +110,7 @@ function App() {
 
     if (unit === "lbs") {
       // Convert lbs to kg and round to nearest 2.5
-      return Math.round(((weight / 2.205).toFixed(1))/2.5) * 2.5;
+      return Math.round((weight / 2.205).toFixed(1) / 2.5) * 2.5;
     } else {
       return Math.round(weight / 2.5) * 2.5;
     }
@@ -163,7 +172,7 @@ function App() {
         </div>
       </header>
       <div className="calculator-container">
-        <LiftCard 
+        <LiftCard
           lift="Squat"
           value={squat}
           onChange={(e) => setSquat(e.target.value)}
@@ -172,7 +181,7 @@ function App() {
           roundToNearest2_5={roundToNearest2_5}
           getConvertedUnit={getConvertedUnit}
         />
-        <LiftCard 
+        <LiftCard
           lift="Bench Press"
           value={bench}
           onChange={(e) => setBench(e.target.value)}
@@ -181,7 +190,7 @@ function App() {
           roundToNearest2_5={roundToNearest2_5}
           getConvertedUnit={getConvertedUnit}
         />
-        <LiftCard 
+        <LiftCard
           lift="Deadlift"
           value={deadlift}
           onChange={(e) => setDeadlift(e.target.value)}
@@ -193,7 +202,8 @@ function App() {
       </div>
       <div className="total-section">
         <h2>
-          Total: {roundToNearest2_5(convertWeight(calculateTotal()))} {getConvertedUnit()}
+          Total: {roundToNearest2_5(convertWeight(calculateTotal()))}{" "}
+          {getConvertedUnit()}
         </h2>
       </div>
       <footer>
