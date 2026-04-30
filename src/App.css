@@ -9,7 +9,7 @@
   min-height: 100vh;
   background: var(--interface-surface-light);
   padding: 2rem;
-  font-family: Lato, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Lexend, Arial, Helvetica, sans-serif;
   color: var(--interface-surface-dark);
   background-color: var(--interface-surface-light);
 }
@@ -38,11 +38,13 @@ button {
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 25px;
+  border-radius: 9999px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 button:hover {
@@ -68,7 +70,7 @@ button:active {
   cursor: pointer;
   background: rgba(255, 255, 255, 0.1);
   padding: 0.5rem 1rem;
-  border-radius: 25px;
+  border-radius: 9999px;
   transition: background-color 0.3s ease;
 }
 
@@ -93,21 +95,73 @@ button:active {
   font-size: 1rem;
 }
 
-.input-group input[type="number"] {
-  width: 100%;
-  padding: 1rem;
+/* Hide native number spinners */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.number-input-wrapper {
+  display: flex;
+  align-items: stretch;
   border: 2px solid var(--secondary-color-light);
-  border-radius: 8px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.number-input-wrapper:focus-within {
+  border-color: var(--primary-color-light);
+  box-shadow: 0 0 0 3px rgba(103, 85, 39, 0.15);
+}
+
+.number-input-wrapper input[type="number"] {
+  flex: 1;
+  min-width: 0;
+  padding: 1rem;
+  border: none;
   font-size: 1.1rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
   background: var(--interface-surface-light);
   color: var(--primary-color-light);
 }
 
-.input-group input[type="number"]:focus {
+.number-input-wrapper input[type="number"]:focus {
   outline: none;
-  border-color: var(--primary-color-light);
-  background: var(--interface-surface-dark-40);
+}
+
+.step-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+  background: var(--secondary-color-light);
+  color: var(--interface-surface-light);
+}
+
+.step-btn:hover {
+  background: var(--primary-color-light);
+}
+
+.step-btn:active {
+  transform: none;
+  background: var(--primary-color-light);
+  opacity: 0.8;
 }
 
 .calculator-container {
@@ -120,10 +174,12 @@ button:active {
 
 .lift-column {
   background: white;
-  border-radius: 15px;
+  border-radius: 0.5rem;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .lift-column h2 {
@@ -136,7 +192,7 @@ button:active {
 }
 
 .attempt-group {
-  border-radius: 25px;
+  border-radius: 0.75rem;
   border: 1px solid var(--secondary-color-dark);
   margin-bottom: 3rem;
   padding: 1rem;
@@ -147,15 +203,15 @@ button:active {
   text-align: center;
   color: var(--secondary-color-light);
   font-size: 1rem;
-  margin-bottom: .5rem;
-  padding-bottom: .5rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--primary-color-light-60);
 }
 
 .calculated-weights {
   margin-top: 1rem;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 
 .calculated-weights .variant:nth-child(3) {
@@ -181,7 +237,7 @@ button:active {
   text-align: center;
   margin: 3rem auto;
   padding: 2rem;
-  border-radius: 15px;
+  border-radius: 0.5rem;
   max-width: 400px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   border: 2px solid var(--secondary-color-light);
@@ -202,7 +258,7 @@ button:active {
 }
 
 footer {
-  text-align: center;;
+  text-align: center;
 }
 
 .save-indicator {
@@ -218,8 +274,8 @@ footer {
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   .app {
-   background: var(--interface-surface-dark);
-   color: var(--interface-surface-light);
+    background: var(--interface-surface-dark);
+    color: var(--interface-surface-light);
   }
 
   .app-header {
@@ -230,15 +286,27 @@ footer {
     color: var(--primary-color-dark);
   }
 
-  .input-group input[type="number"] {
-    background: var(--interface-surface-dark);
-    color: var(--primary-color-dark);
-    border: none;
+  .number-input-wrapper {
+    border-color: var(--secondary-color-dark);
   }
 
-  .input-group input[type="number"]:focus {
+  .number-input-wrapper:focus-within {
     border-color: var(--primary-color-dark);
     box-shadow: 0 0 0 3px rgba(221, 196, 140, 0.2);
+  }
+
+  .number-input-wrapper input[type="number"] {
+    background: var(--interface-surface-dark);
+    color: var(--primary-color-dark);
+  }
+
+  .step-btn {
+    background: var(--secondary-color-dark);
+    color: var(--interface-surface-dark);
+  }
+
+  .step-btn:hover {
+    background: var(--primary-color-dark);
   }
 
   .lift-column {
@@ -262,7 +330,7 @@ footer {
   .attempt-title {
     color: var(--secondary-color-dark);
 
-    border-bottom: 1px solid var(--secondary-color-dark) 
+    border-bottom: 1px solid var(--secondary-color-dark);
   }
 
   .total-section {

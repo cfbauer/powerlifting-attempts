@@ -1,14 +1,37 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+
+interface LiftCardProps {
+  lift: string;
+  value: string;
+  setValue: (val: string) => void;
+  unit: string;
+  convertWeight: (weight: number) => number;
+  roundToNearest2_5: (num: number) => number;
+  getConvertedUnit: () => string;
+}
+
 const LiftCard = ({
   lift,
   value,
-  onChange,
+  setValue,
   unit,
   convertWeight,
   roundToNearest2_5,
   getConvertedUnit,
-}) => {
+}: LiftCardProps) => {
+  const step = 2.5;
+
+  const increment = () => {
+    const current = parseFloat(value) || 0;
+    setValue(String(current + step));
+  };
+
+  const decrement = () => {
+    const current = parseFloat(value) || 0;
+    const next = current - step;
+    setValue(next >= 0 ? String(next) : "0");
+  };
   const calculateAttemptWeight = (weight, percentage) => {
     if (!weight || isNaN(weight)) return "";
     const convertedWeight = convertWeight(weight);
@@ -28,13 +51,17 @@ const LiftCard = ({
         <label htmlFor={lift.toLowerCase().replace(" ", "-")}>
           Weight ({unit})
         </label>
-        <input
-          id={lift.toLowerCase().replace(" ", "-")}
-          type="number"
-          value={value}
-          onChange={onChange}
-          placeholder={`Enter weight in ${unit}`}
-        />
+        <div className="number-input-wrapper">
+          <button type="button" className="step-btn decrement" onClick={decrement} aria-label="Decrease weight">−</button>
+          <input
+            id={lift.toLowerCase().replace(" ", "-")}
+            type="number"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder={`Enter ${unit}`}
+          />
+          <button type="button" className="step-btn increment" onClick={increment} aria-label="Increase weight">+</button>
+        </div>
       </div>
       {value && (
         <div className="calculated-weights">
@@ -153,6 +180,7 @@ function App() {
             <label>
               <input
                 type="radio"
+                name="unit"
                 value="lbs"
                 checked={unit === "lbs"}
                 onChange={(e) => setUnit(e.target.value)}
@@ -162,6 +190,7 @@ function App() {
             <label>
               <input
                 type="radio"
+                name="unit"
                 value="kg"
                 checked={unit === "kg"}
                 onChange={(e) => setUnit(e.target.value)}
@@ -175,7 +204,7 @@ function App() {
         <LiftCard
           lift="Squat"
           value={squat}
-          onChange={(e) => setSquat(e.target.value)}
+          setValue={setSquat}
           unit={unit}
           convertWeight={convertWeight}
           roundToNearest2_5={roundToNearest2_5}
@@ -184,7 +213,7 @@ function App() {
         <LiftCard
           lift="Bench Press"
           value={bench}
-          onChange={(e) => setBench(e.target.value)}
+          setValue={setBench}
           unit={unit}
           convertWeight={convertWeight}
           roundToNearest2_5={roundToNearest2_5}
@@ -193,7 +222,7 @@ function App() {
         <LiftCard
           lift="Deadlift"
           value={deadlift}
-          onChange={(e) => setDeadlift(e.target.value)}
+          setValue={setDeadlift}
           unit={unit}
           convertWeight={convertWeight}
           roundToNearest2_5={roundToNearest2_5}
@@ -211,7 +240,7 @@ function App() {
           Clear All Data
         </button>
         <div className="save-indicator">
-          <small>💾 Your data is automatically saved</small>
+          <small>Your data is automatically saved</small>
         </div>
       </footer>
     </div>
