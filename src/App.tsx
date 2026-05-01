@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import { useDocumentTitle } from "@uidotdev/usehooks";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import "./App.css";
 
 interface LiftCardProps {
@@ -97,41 +97,11 @@ const LiftCard = ({
 
 function App() {
   // Load saved values from localStorage or use empty string as default
-  const [squat, setSquat] = useState(
-    () => localStorage.getItem("powerlifting-squat") || ""
-  );
-  const [bench, setBench] = useState(
-    () => localStorage.getItem("powerlifting-bench") || ""
-  );
-  const [deadlift, setDeadlift] = useState(
-    () => localStorage.getItem("powerlifting-deadlift") || ""
-  );
-  const [unit, setUnit] = useState(
-    () => localStorage.getItem("powerlifting-unit") || "lbs"
-  );
 
-  // Save to localStorage whenever values change
-  useEffect(() => {
-    if (squat !== "") {
-      localStorage.setItem("powerlifting-squat", squat);
-    }
-  }, [squat]);
-
-  useEffect(() => {
-    if (bench !== "") {
-      localStorage.setItem("powerlifting-bench", bench);
-    }
-  }, [bench]);
-
-  useEffect(() => {
-    if (deadlift !== "") {
-      localStorage.setItem("powerlifting-deadlift", deadlift);
-    }
-  }, [deadlift]);
-
-  useEffect(() => {
-    localStorage.setItem("powerlifting-unit", unit);
-  }, [unit]);
+  const [squat, setSquat] = useLocalStorage("powerlifting-squat", "");
+  const [bench, setBench] = useLocalStorage("powerlifting-bench", "");
+  const [deadlift, setDeadlift] = useLocalStorage("powerlifting-deadlift", "");
+  const [unit, setUnit] = useLocalStorage("powerlifting-unit", "lbs");
 
   const convertWeight = (weight) => {
     if (!weight || isNaN(weight)) return "";
@@ -159,12 +129,6 @@ function App() {
     setSquat("");
     setBench("");
     setDeadlift("");
-    setUnit("lbs");
-    // Clear from localStorage
-    localStorage.removeItem("powerlifting-squat");
-    localStorage.removeItem("powerlifting-bench");
-    localStorage.removeItem("powerlifting-deadlift");
-    localStorage.removeItem("powerlifting-unit");
   };
 
   const roundToNearest2_5 = (num) => {
