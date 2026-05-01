@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useDocumentTitle } from "@uidotdev/usehooks";
 import "./App.css";
 
 interface LiftCardProps {
@@ -170,6 +171,9 @@ function App() {
     if (!num || isNaN(num)) return "";
     return Math.round(num / 2.5) * 2.5;
   };
+
+  const total = roundToNearest2_5(convertWeight(calculateTotal()));
+  useDocumentTitle( total ? `Total: ${total} ${getConvertedUnit()} | Powerlifting Attempt Selector` : "Powerlifting Attempt Selector");
 
   return (
     <div className="app">
