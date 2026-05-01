@@ -33,7 +33,7 @@ const LiftCard = ({
     const next = current - step;
     setValue(next >= 0 ? String(next) : "0");
   };
-  const calculateAttemptWeight = (weight, percentage) => {
+  const calculateAttemptWeight = (weight: number, percentage: number) => {
     if (!weight || isNaN(weight)) return "";
     const convertedWeight = convertWeight(weight);
     return roundToNearest2_5(convertedWeight * percentage);
@@ -103,7 +103,7 @@ function App() {
   const [deadlift, setDeadlift] = useLocalStorage("powerlifting-deadlift", "");
   const [unit, setUnit] = useLocalStorage("powerlifting-unit", "lbs");
 
-  const convertWeight = (weight) => {
+  const convertWeight = (weight: number) => {
     if (!weight || isNaN(weight)) return "";
 
     if (unit === "lbs") {
@@ -114,7 +114,7 @@ function App() {
     }
   };
 
-  const getConvertedUnit = () => {
+  const getConvertedUnit = (): "kg" | "lbs" => {
     return unit === "lbs" ? "kg" : "lbs";
   };
 
@@ -131,7 +131,7 @@ function App() {
     setDeadlift("");
   };
 
-  const roundToNearest2_5 = (num) => {
+  const roundToNearest2_5 = (num: number) => {
     if (!num || isNaN(num)) return "";
     return Math.round(num / 2.5) * 2.5;
   };
